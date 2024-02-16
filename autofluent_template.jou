@@ -1,0 +1,82 @@
+; to run: fluent 3ddp -t 18 -g -cflush <autofluent.jou> simulation_report.log
+
+; *********************************************************
+; Variables
+; *********************************************************
+
+; inlet (m/s) can also do flow rate m3/s 8.5e-5
+(define velocityInlet 0.2)
+(define pressureOutlet 0)
+
+; material properties
+(define viscosityBlood 0.004)
+(define densityBlood 1060)
+
+; calculation settings
+(define itnNumber 1000)
+(define convCriterion 0.000001)
+
+; file directories
+(define filedir "D:/Fluent/root_folder/volume_msh/")
+(define csvdir "D:/Fluent/root_folder/cfd_csv/")
+
+; *********************************************************
+; Loop
+; *********************************************************
+(for-each (lambda (i)
+
+; load in mesh
+(ti-menu-load-string (format #f "file rc ~a~a.msh OK" filedir i))
+
+; improve quality
+(ti-menu-load-string (format #f "/mesh/repair-improve/improve-quality"))
+
+; make mesh polyhedral
+(ti-menu-load-string (format #f "/mesh/polyhedra/convert-domain"))
+
+; **********SCALE MESH TO METRES**********
+(ti-menu-load-string (format #f "/mesh/scale 0.001 0.001 0.001"))
+
+
+; create blood material
+(ti-menu-load-string (format #f "/define/materials/delete blood"))
+(ti-menu-load-string (format #f "/define/materials/change-create air blood y constant densityBlood n n y constant viscosityBlood n n n y"))
+
+; set cell zone conditions to blood (interior, id=2)
+(ti-menu-load-string (format #f "/define/boundary-conditions/fluid 2 y blood n n n n 0 n 0 n 0 n 0 n 0 n 1 n n n n n"))
+
+; assign inlet/outlet
+(ti-menu-load-string (format #f "/define/boundary-conditions/zone-type 4 pressure-outlet"))
+(ti-menu-load-string (format #f "/define/boundary-conditions/zone-type 5 pressure-outlet"))
+(ti-menu-load-string (format #f "/define/boundary-conditions/zone-type 6 velocity-inlet"))
+
+
+; set BCs
+(ti-menu-load-string (format #f "/define/boundary-conditions/velocity-inlet 6 n n y y n velocityInlet n 0 n n y 5 10"))
+
+
+; set convergence criteria
+(ti-menu-load-string (format #f "/solve/monitors/residual/convergence-criteria convCriterion convCriterion convCriterion convCriterion"))
+
+; init
+(ti-menu-load-string (format #f "/solve/initialize/hyb-initialization"))
+
+; solve
+(ti-menu-load-string (format #f "/solve/iterate ~a" itnNumber))
+
+
+; **********SCALE MESH BACK TO MM**********
+(ti-menu-load-string (format #f "/mesh/scale 1000 1000 1000"))
+
+
+; write ascii results file
+(ti-menu-load-string (format #f "/file/export ascii ~a~a.csv () y cell-id x-coordinate y-coordinate z-coordinate x-velocity y-velocity z-velocity pressure velocity-magnitude () n" csvdir i))
+
+
+)
+
+(list 
+)
+)
+
+(exit)
