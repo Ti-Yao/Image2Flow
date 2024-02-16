@@ -7,11 +7,11 @@ Tina Yao, Endrit Pajaziti, Silvia Shievano, Michael Quail, Jennifer Steeden & Vi
 <img src="https://github.com/Ti-Yao/Image2Flow/blob/main/images/Thumbnail.png" width="350"/>
 
 ## Volume Mesh Generation and CFD simulation
-Volume mesh generation for this paper was done using TetGen in VMTK. Additionally, CFD simulations were performed in Ansys Fluent. Code for both mesh generation and CFD simulation can be found in the folder called Fluent. The code was adapted from [GitHub repository](https://github.com/EndritPJ/CFD_Machine_Learning) [1]
+Volume mesh generation for this paper was done using TetGen in VMTK. Additionally, CFD simulations were performed in Ansys Fluent. Code for both mesh generation and CFD simulation can be found in the folder called Fluent. The code was adapted from [Endrit Pajaziti CFD](https://github.com/EndritPJ/CFD_Machine_Learning) [1]
 
 
 ## Image2Flow deep learning architecture
-The code for the Image2Flow architecture can be found in the model folder. It is a hybrid image and graph convolutional neural network that was adapted from [GitHub repository](https://github.com/EndritPJ/CFD_Machine_Learning)) [2]
+The code for the Image2Flow architecture can be found in the model folder. It is a hybrid image and graph convolutional neural network that was adapted from [MeshDeformNet](https://github.com/EndritPJ/CFD_Machine_Learning) [2]
 
 <img src="https://github.com/Ti-Yao/Image2Flow/blob/main/images/Figure1.png" width="550"/>
 
