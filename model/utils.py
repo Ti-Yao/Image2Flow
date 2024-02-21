@@ -331,7 +331,7 @@ def calculate_edge_length(edges_lines):
     for j in range(edges_lines.shape[1] - 1):
         edges_lines_start = edges_lines[:, j, :]
         edges_lines_end = edges_lines[:, j + 1, :]
-        edge_lengths = tf.math.sqrt(tf.reduce_sum(tf.math.square(edges_lines_start - edges_lines_end), axis=-1))
+        edge_lengths = tf.norm(edges_lines_start - edges_lines_end, axis = -1) 
         all_edge_lengths.append(edge_lengths)
     all_edge_lengths = tf.stack(all_edge_lengths, axis=-1)
     return all_edge_lengths
